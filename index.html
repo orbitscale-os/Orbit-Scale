@@ -1,0 +1,1498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ORBIT SCALE — We Scale Brands to 7-Figures</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0a0f;
+      --bg2: #111118;
+      --bg3: #16161f;
+      --blue: #007BFF;
+      --blue-glow: rgba(0,123,255,0.25);
+      --blue-light: #3395ff;
+      --emerald: #00e5a0;
+      --text: #f0f0f8;
+      --muted: #8888aa;
+      --border: rgba(255,255,255,0.07);
+      --glass: rgba(255,255,255,0.04);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000; opacity: .4;
+    }
+
+    /* ── SCROLLBAR ── */
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--blue); border-radius: 2px; }
+
+    /* ══════════════════════════════
+       NAV
+    ══════════════════════════════ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 900;
+      padding: 1rem 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      backdrop-filter: blur(20px) saturate(180%);
+      background: rgba(10,10,15,0.6);
+      border-bottom: 1px solid var(--border);
+      transition: all .3s ease;
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.4rem; letter-spacing: .05em;
+      color: var(--text);
+      display: flex; align-items: center; gap: .5rem;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--blue); }
+    .orbit-icon {
+      width: 32px; height: 32px;
+      border: 2px solid var(--blue);
+      border-radius: 50%;
+      position: relative;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .orbit-icon::after {
+      content: '';
+      width: 8px; height: 8px;
+      background: var(--blue);
+      border-radius: 50%;
+    }
+    .orbit-ring {
+      position: absolute;
+      width: 20px; height: 10px;
+      border: 1.5px solid var(--emerald);
+      border-radius: 50%;
+      transform: rotateX(60deg);
+    }
+    .nav-links {
+      display: flex; gap: 2.5rem; list-style: none;
+    }
+    .nav-links a {
+      color: var(--muted); text-decoration: none;
+      font-size: .9rem; font-weight: 500; letter-spacing: .03em;
+      transition: color .2s;
+    }
+    .nav-links a:hover { color: var(--text); }
+    .nav-cta {
+      background: var(--blue);
+      color: #fff !important;
+      padding: .55rem 1.3rem;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: background .2s, box-shadow .2s !important;
+    }
+    .nav-cta:hover {
+      background: var(--blue-light) !important;
+      box-shadow: 0 0 20px var(--blue-glow) !important;
+    }
+    .hamburger {
+      display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px;
+    }
+    .hamburger span {
+      width: 24px; height: 2px; background: var(--text); border-radius: 2px;
+      transition: all .3s;
+    }
+    .mobile-menu {
+      display: none;
+      position: fixed; top: 65px; left: 0; right: 0;
+      background: rgba(10,10,15,0.97);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      flex-direction: column; gap: 1.2rem;
+      z-index: 899;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      color: var(--muted); text-decoration: none;
+      font-size: 1rem; font-weight: 500;
+      padding: .5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color .2s;
+    }
+    .mobile-menu a:hover { color: var(--text); }
+
+    /* ══════════════════════════════
+       HERO
+    ══════════════════════════════ */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 7rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 10%, rgba(0,123,255,0.15) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(0,229,160,0.06) 0%, transparent 60%);
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,123,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,123,255,0.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 860px; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: rgba(0,123,255,0.1);
+      border: 1px solid rgba(0,123,255,0.3);
+      color: var(--blue-light);
+      padding: .4rem 1rem; border-radius: 50px;
+      font-size: .8rem; font-weight: 500; letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 1.8rem;
+      animation: fadeUp .8s ease both;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--emerald);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(1.4); }
+    }
+    .hero h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -.02em;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .8s .15s ease both;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--blue), var(--emerald));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-sub {
+      color: var(--muted);
+      font-size: 1.15rem;
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      font-weight: 300;
+      animation: fadeUp .8s .3s ease both;
+    }
+    .hero-actions {
+      display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .8s .45s ease both;
+    }
+    .btn-primary {
+      background: var(--blue);
+      color: #fff; border: none; cursor: pointer;
+      padding: .85rem 2.2rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      text-decoration: none;
+      transition: all .2s;
+      box-shadow: 0 4px 30px rgba(0,123,255,0.3);
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-primary:hover {
+      background: var(--blue-light);
+      box-shadow: 0 6px 40px rgba(0,123,255,0.5);
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: .85rem 2.2rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 500;
+      text-decoration: none;
+      transition: all .2s;
+      cursor: pointer;
+    }
+    .btn-outline:hover {
+      border-color: var(--blue);
+      color: var(--blue);
+    }
+    .hero-stats {
+      display: flex; gap: 3rem; justify-content: center; flex-wrap: wrap;
+      margin-top: 4rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      animation: fadeUp .8s .6s ease both;
+    }
+    .stat-item { text-align: center; }
+    .stat-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.4rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--blue), var(--emerald));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .stat-label { color: var(--muted); font-size: .85rem; margin-top: .2rem; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════
+       LOGOS / SOCIAL PROOF
+    ══════════════════════════════ */
+    .logos {
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      overflow: hidden;
+    }
+    .logos-label {
+      color: var(--muted); font-size: .8rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .logos-track {
+      display: flex; gap: 3.5rem; align-items: center;
+      white-space: nowrap;
+      animation: scroll 30s linear infinite;
+      width: max-content;
+    }
+    .logos-wrapper { overflow: hidden; }
+    @keyframes scroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .logo-item {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1.1rem;
+      color: rgba(255,255,255,0.2);
+      letter-spacing: .1em;
+      white-space: nowrap;
+      transition: color .3s;
+    }
+    .logo-sep { color: rgba(0,123,255,0.3); font-size: 1.2rem; }
+
+    /* ══════════════════════════════
+       SECTION COMMONS
+    ══════════════════════════════ */
+    section { padding: 6rem 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .section-tag {
+      display: inline-block;
+      color: var(--blue); font-size: .75rem;
+      letter-spacing: .15em; text-transform: uppercase;
+      font-weight: 600; margin-bottom: .8rem;
+    }
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 800; line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-sub {
+      color: var(--muted); font-size: 1.05rem;
+      max-width: 540px; font-weight: 300;
+    }
+    .section-header { margin-bottom: 3.5rem; }
+
+    /* ══════════════════════════════
+       SERVICES
+    ══════════════════════════════ */
+    #services { background: var(--bg2); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.5rem;
+    }
+    .service-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, transform .3s;
+      cursor: default;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--blue), var(--emerald));
+      opacity: 0; transition: opacity .3s;
+    }
+    .service-card:hover { border-color: rgba(0,123,255,0.3); transform: translateY(-4px); }
+    .service-card:hover::before { opacity: 1; }
+    .service-icon {
+      width: 52px; height: 52px;
+      background: rgba(0,123,255,0.1);
+      border: 1px solid rgba(0,123,255,0.2);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 1.4rem;
+    }
+    .service-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.15rem; font-weight: 700;
+      margin-bottom: .6rem;
+    }
+    .service-card p { color: var(--muted); font-size: .9rem; line-height: 1.7; }
+    .service-tag {
+      display: inline-block;
+      margin-top: 1.2rem;
+      background: rgba(0,229,160,0.08);
+      border: 1px solid rgba(0,229,160,0.2);
+      color: var(--emerald);
+      font-size: .72rem; padding: .25rem .7rem;
+      border-radius: 50px; letter-spacing: .06em;
+    }
+
+    /* ══════════════════════════════
+       RESULTS / NUMBERS
+    ══════════════════════════════ */
+    #results {
+      background: var(--bg);
+      position: relative; overflow: hidden;
+    }
+    #results::before {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,123,255,0.07), transparent 70%);
+      pointer-events: none;
+    }
+    .results-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .result-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem 2.5rem;
+      display: flex; flex-direction: column; gap: .5rem;
+    }
+    .result-card.featured {
+      background: linear-gradient(135deg, rgba(0,123,255,0.1), rgba(0,229,160,0.05));
+      border-color: rgba(0,123,255,0.25);
+      grid-column: span 2;
+    }
+    .result-metric {
+      font-family: 'Syne', sans-serif;
+      font-size: 3.5rem; font-weight: 800; line-height: 1;
+      background: linear-gradient(135deg, var(--blue), var(--emerald));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .result-label { color: var(--text); font-weight: 500; font-size: 1rem; }
+    .result-desc { color: var(--muted); font-size: .87rem; }
+
+    /* ══════════════════════════════
+       PROCESS
+    ══════════════════════════════ */
+    #process { background: var(--bg2); }
+    .process-steps {
+      display: flex; flex-direction: column; gap: 0;
+      position: relative;
+    }
+    .process-steps::before {
+      content: '';
+      position: absolute; left: 28px; top: 0; bottom: 0;
+      width: 1px;
+      background: linear-gradient(to bottom, var(--blue), var(--emerald), transparent);
+    }
+    .process-step {
+      display: flex; gap: 2rem; align-items: flex-start;
+      padding: 0 0 3rem 0;
+      position: relative;
+    }
+    .step-num {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1rem;
+      color: var(--blue);
+      flex-shrink: 0;
+      position: relative; z-index: 1;
+      transition: border-color .3s, background .3s;
+    }
+    .process-step:hover .step-num {
+      background: rgba(0,123,255,0.1);
+      border-color: var(--blue);
+    }
+    .step-body h3 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1.15rem;
+      margin-bottom: .5rem; margin-top: .8rem;
+    }
+    .step-body p { color: var(--muted); font-size: .92rem; max-width: 540px; line-height: 1.7; }
+
+    /* ══════════════════════════════
+       TESTIMONIALS
+    ══════════════════════════════ */
+    #testimonials { background: var(--bg); }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .testimonial-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      transition: border-color .3s;
+    }
+    .testimonial-card:hover { border-color: rgba(0,123,255,0.2); }
+    .t-quote {
+      font-size: 2rem; color: var(--blue);
+      font-family: Georgia, serif; line-height: 1;
+      margin-bottom: .8rem;
+    }
+    .t-text {
+      color: var(--text); font-size: .93rem;
+      line-height: 1.75; margin-bottom: 1.5rem;
+    }
+    .t-author { display: flex; align-items: center; gap: .8rem; }
+    .t-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--blue), var(--emerald));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Syne', sans-serif; font-weight: 700; font-size: .9rem;
+    }
+    .t-name { font-weight: 600; font-size: .9rem; }
+    .t-role { color: var(--muted); font-size: .8rem; }
+    .t-stars { color: #ffd700; font-size: .85rem; margin-bottom: .5rem; }
+
+    /* ══════════════════════════════
+       PRICING
+    ══════════════════════════════ */
+    #pricing { background: var(--bg2); }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem; align-items: start;
+    }
+    .pricing-card {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 16px; padding: 2.5rem 2rem;
+      transition: transform .3s, border-color .3s;
+    }
+    .pricing-card:hover { transform: translateY(-4px); }
+    .pricing-card.popular {
+      border-color: rgba(0,123,255,0.4);
+      background: linear-gradient(160deg, rgba(0,123,255,0.08), var(--glass));
+      position: relative;
+    }
+    .popular-badge {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: var(--blue); color: #fff;
+      font-size: .72rem; font-weight: 600;
+      padding: .3rem .9rem; border-radius: 50px;
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .plan-name {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1rem;
+      color: var(--muted); text-transform: uppercase;
+      letter-spacing: .1em; margin-bottom: .6rem;
+    }
+    .plan-price {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.8rem; font-weight: 800;
+      color: var(--text); margin-bottom: .2rem;
+    }
+    .plan-price span { font-size: 1rem; color: var(--muted); font-weight: 400; }
+    .plan-desc { color: var(--muted); font-size: .87rem; margin-bottom: 1.8rem; }
+    .plan-features { list-style: none; margin-bottom: 2rem; }
+    .plan-features li {
+      padding: .55rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: .9rem; color: var(--text);
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .plan-features li::before { content: '✓'; color: var(--emerald); font-weight: 700; }
+
+    /* ══════════════════════════════
+       CONTACT / APPLICATION FORM
+    ══════════════════════════════ */
+    #contact {
+      background: var(--bg);
+      position: relative; overflow: hidden;
+    }
+    #contact::before {
+      content: '';
+      position: absolute; bottom: -200px; right: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(0,229,160,0.05), transparent 70%);
+      pointer-events: none;
+    }
+    .contact-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 4rem; align-items: start;
+    }
+    .contact-info h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: 2.2rem; font-weight: 800; margin-bottom: 1rem;
+    }
+    .contact-info p { color: var(--muted); font-size: .95rem; line-height: 1.7; margin-bottom: 2rem; }
+    .contact-detail {
+      display: flex; align-items: center; gap: .8rem;
+      padding: 1rem; margin-bottom: .8rem;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: .9rem;
+    }
+    .contact-detail-icon {
+      width: 38px; height: 38px;
+      background: rgba(0,123,255,0.1);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem; flex-shrink: 0;
+    }
+    .contact-detail-text { line-height: 1.4; }
+    .contact-detail-label { color: var(--muted); font-size: .75rem; }
+    .contact-detail-val { color: var(--text); font-weight: 500; font-size: .88rem; word-break: break-all; }
+
+    /* FORM */
+    .application-form {
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 2.5rem;
+    }
+    .form-title {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: 1.3rem;
+      margin-bottom: 1.8rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .form-group { margin-bottom: 1.2rem; }
+    .form-group label {
+      display: block; font-size: .8rem;
+      color: var(--muted); font-weight: 500;
+      letter-spacing: .05em; margin-bottom: .5rem;
+      text-transform: uppercase;
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .95rem; padding: .8rem 1rem;
+      outline: none;
+      transition: border-color .2s, background .2s;
+      appearance: none;
+    }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: var(--blue);
+      background: rgba(0,123,255,0.05);
+    }
+    .form-group select option { background: #1a1a2e; }
+    .form-group textarea { resize: vertical; min-height: 110px; }
+    .form-note { color: var(--muted); font-size: .78rem; margin-bottom: 1.2rem; }
+    .form-note a { color: var(--blue); text-decoration: none; }
+    .submit-btn {
+      width: 100%;
+      background: var(--blue);
+      color: #fff; border: none; cursor: pointer;
+      padding: 1rem;
+      border-radius: 8px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      transition: all .2s;
+      box-shadow: 0 4px 30px rgba(0,123,255,0.3);
+    }
+    .submit-btn:hover {
+      background: var(--blue-light);
+      box-shadow: 0 6px 40px rgba(0,123,255,0.5);
+      transform: translateY(-2px);
+    }
+    .submit-btn:active { transform: translateY(0); }
+    .form-success {
+      display: none;
+      text-align: center; padding: 2rem;
+    }
+    .form-success.show { display: block; }
+    .success-icon { font-size: 3rem; margin-bottom: 1rem; }
+    .success-text { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: .5rem; }
+    .success-sub { color: var(--muted); font-size: .9rem; }
+
+    /* ══════════════════════════════
+       FAQ
+    ══════════════════════════════ */
+    #faq { background: var(--bg2); }
+    .faq-list { max-width: 700px; }
+    .faq-item {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: .8rem;
+      overflow: hidden;
+      transition: border-color .3s;
+    }
+    .faq-item.open { border-color: rgba(0,123,255,0.3); }
+    .faq-q {
+      width: 100%; background: none; border: none; cursor: pointer;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 1.5rem;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: .97rem; font-weight: 500;
+      text-align: left;
+    }
+    .faq-icon { color: var(--blue); font-size: 1.2rem; transition: transform .3s; flex-shrink: 0; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+    .faq-a {
+      max-height: 0; overflow: hidden;
+      transition: max-height .4s ease;
+      color: var(--muted); font-size: .9rem; line-height: 1.7;
+    }
+    .faq-item.open .faq-a { max-height: 300px; }
+    .faq-a-inner { padding: 0 1.5rem 1.2rem; }
+
+    /* ══════════════════════════════
+       FOOTER
+    ══════════════════════════════ */
+    footer {
+      background: var(--bg3);
+      border-top: 1px solid var(--border);
+      padding: 3rem 2rem 1.5rem;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem; margin-bottom: 3rem;
+    }
+    .footer-brand p {
+      color: var(--muted); font-size: .87rem;
+      line-height: 1.7; margin: 1rem 0 1.5rem;
+      max-width: 240px;
+    }
+    .footer-socials { display: flex; gap: .7rem; }
+    .social-btn {
+      width: 36px; height: 36px;
+      background: var(--glass);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted); font-size: .85rem;
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .social-btn:hover { background: rgba(0,123,255,0.1); border-color: var(--blue); color: var(--blue); }
+    .footer-col h4 {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: .85rem;
+      text-transform: uppercase; letter-spacing: .1em;
+      color: var(--text); margin-bottom: 1.2rem;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col ul li { margin-bottom: .7rem; }
+    .footer-col ul li a {
+      color: var(--muted); text-decoration: none;
+      font-size: .88rem; transition: color .2s;
+    }
+    .footer-col ul li a:hover { color: var(--blue); }
+    .footer-bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 1.5rem;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy {
+      color: var(--muted); font-size: .82rem;
+    }
+    .footer-power {
+      font-family: 'Syne', sans-serif;
+      font-weight: 700; font-size: .85rem;
+      color: var(--blue); letter-spacing: .05em;
+    }
+
+    /* ══════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════ */
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+      .contact-wrap { grid-template-columns: 1fr; gap: 2.5rem; }
+      .results-grid { grid-template-columns: 1fr; }
+      .result-card.featured { grid-column: span 1; }
+      .footer-top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .form-row { grid-template-columns: 1fr; }
+      .footer-top { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+      .hero-stats { gap: 1.5rem; }
+      .pricing-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ══════════════════════════════
+       SCROLL ANIMATIONS
+    ══════════════════════════════ */
+    .reveal {
+      opacity: 0; transform: translateY(40px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: .1s; }
+    .reveal-delay-2 { transition-delay: .2s; }
+    .reveal-delay-3 { transition-delay: .3s; }
+
+    /* Back to top */
+    .back-top {
+      position: fixed; bottom: 2rem; right: 2rem;
+      width: 44px; height: 44px;
+      background: var(--blue);
+      border: none; border-radius: 10px;
+      color: #fff; font-size: 1.1rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity .3s, transform .3s;
+      box-shadow: 0 4px 20px rgba(0,123,255,0.4);
+      z-index: 800;
+    }
+    .back-top.show { opacity: 1; pointer-events: all; }
+    .back-top:hover { transform: translateY(-3px); }
+  </style>
+</head>
+<body>
+
+<!-- ── NAVIGATION ── -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">
+    <div class="orbit-icon"><div class="orbit-ring"></div></div>
+    ORBIT <span>SCALE</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#process">Process</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact" class="nav-cta">Apply Now</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#services" onclick="closeMenu()">Services</a>
+  <a href="#results" onclick="closeMenu()">Results</a>
+  <a href="#process" onclick="closeMenu()">Process</a>
+  <a href="#pricing" onclick="closeMenu()">Pricing</a>
+  <a href="#faq" onclick="closeMenu()">FAQ</a>
+  <a href="#contact" onclick="closeMenu()" style="color:var(--blue)">Apply Now →</a>
+</div>
+
+<!-- ── HERO ── -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🚀 Accepting New Clients — Limited Spots</div>
+    <h1>We Scale Brands<br>to <em>7-Figures</em></h1>
+    <p class="hero-sub">Data-driven social media marketing that delivers measurable ROI. We handle your paid ads, content, and lead generation — you focus on fulfillment.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Apply for a Free Strategy Call →</a>
+      <a href="#results" class="btn-outline">See Our Results</a>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <div class="stat-num">₹4.2Cr+</div>
+        <div class="stat-label">Revenue Generated</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">120+</div>
+        <div class="stat-label">Brands Scaled</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">8.4×</div>
+        <div class="stat-label">Average ROAS</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">Client Retention</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── LOGOS ── -->
+<div class="logos">
+  <div class="logos-label">Trusted by fast-growing brands</div>
+  <div class="logos-wrapper">
+    <div class="logos-track">
+      <span class="logo-item">NEXUS MEDIA</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">APEX BRANDS</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">VAULT CO.</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">PULSAR INC</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">ZENITH OPS</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">STRIDE LABS</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">NOVA RETAIL</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">CORE DIGITAL</span>
+      <span class="logo-sep">◆</span>
+      <!-- duplicate for seamless loop -->
+      <span class="logo-item">NEXUS MEDIA</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">APEX BRANDS</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">VAULT CO.</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">PULSAR INC</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">ZENITH OPS</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">STRIDE LABS</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">NOVA RETAIL</span>
+      <span class="logo-sep">◆</span>
+      <span class="logo-item">CORE DIGITAL</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── SERVICES ── -->
+<section id="services">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">What We Do</span>
+      <h2 class="section-title">Growth Systems Built<br>for Scale</h2>
+      <p class="section-sub">Every service we offer is built around one goal: measurable, compounding growth for your brand.</p>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">📈</div>
+        <h3>Paid Advertising</h3>
+        <p>Meta, Google & YouTube ad campaigns engineered for maximum ROAS. We build, manage, and scale your ad spend profitably — from ₹50K to ₹50L/month.</p>
+        <span class="service-tag">Meta · Google · YouTube</span>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="service-icon">🎯</div>
+        <h3>Content Strategy</h3>
+        <p>Organic content that builds authority and converts. We craft a full-funnel content calendar — short-form video, carousels, and copy that stops the scroll.</p>
+        <span class="service-tag">Instagram · LinkedIn · Reels</span>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="service-icon">⚡</div>
+        <h3>Lead Generation</h3>
+        <p>High-intent lead funnels that deliver qualified prospects directly into your pipeline. Landing pages, lead magnets, and automated nurture sequences.</p>
+        <span class="service-tag">Funnels · CRM · Automation</span>
+      </div>
+      <div class="service-card reveal reveal-delay-1">
+        <div class="service-icon">🔍</div>
+        <h3>Brand Positioning</h3>
+        <p>Strategic brand identity and market positioning that makes you the obvious choice. We define your USP, audience segments, and messaging framework.</p>
+        <span class="service-tag">Strategy · Identity · Copy</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── RESULTS ── -->
+<section id="results">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Proof of Work</span>
+      <h2 class="section-title">Numbers Don't Lie</h2>
+      <p class="section-sub">Real results from real clients. Every metric is tracked, reported, and optimized weekly.</p>
+    </div>
+    <div class="results-grid">
+      <div class="result-card featured reveal">
+        <div class="result-metric">₹1.8Cr</div>
+        <div class="result-label">Revenue generated for a D2C fashion brand in 90 days</div>
+        <div class="result-desc">Meta ad spend: ₹14L → Revenue: ₹1.8Cr → ROAS: 12.8×</div>
+      </div>
+      <div class="result-card reveal reveal-delay-1">
+        <div class="result-metric">340%</div>
+        <div class="result-label">Increase in qualified leads for a SaaS company</div>
+        <div class="result-desc">LinkedIn + Google combo campaign, 60-day window</div>
+      </div>
+      <div class="result-card reveal reveal-delay-2">
+        <div class="result-metric">₹62L</div>
+        <div class="result-label">Pipeline generated for a high-ticket coaching brand</div>
+        <div class="result-desc">Organic + paid funnel — 45 days to full ROI</div>
+      </div>
+      <div class="result-card reveal reveal-delay-1">
+        <div class="result-metric">22K</div>
+        <div class="result-label">Organic followers gained in 30 days for a lifestyle brand</div>
+        <div class="result-desc">Content strategy + Reels system, zero paid spend</div>
+      </div>
+      <div class="result-card reveal reveal-delay-2">
+        <div class="result-metric">4.9★</div>
+        <div class="result-label">Average client satisfaction rating across all engagements</div>
+        <div class="result-desc">Based on 120+ client reviews and post-project surveys</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROCESS ── -->
+<section id="process">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">How It Works</span>
+      <h2 class="section-title">Our 4-Step<br>Orbit Framework</h2>
+      <p class="section-sub">A proven system that takes brands from flat to orbit — in 90 days or less.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;" class="process-layout">
+      <div class="process-steps reveal">
+        <div class="process-step">
+          <div class="step-num">01</div>
+          <div class="step-body">
+            <h3>Discovery & Audit</h3>
+            <p>We deep-dive into your brand, audience, competitors, and existing funnels. You get a full growth audit within 48 hours of onboarding.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">02</div>
+          <div class="step-body">
+            <h3>Strategy Architecture</h3>
+            <p>We build a 90-day growth roadmap — custom for your brand, budget, and goals. No templates. No cookie-cutter plans.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">03</div>
+          <div class="step-body">
+            <h3>Launch & Execute</h3>
+            <p>Campaigns go live. Content is deployed. Funnels are activated. Our team executes with military precision across every channel.</p>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-num">04</div>
+          <div class="step-body">
+            <h3>Optimize & Scale</h3>
+            <p>Weekly performance reviews. A/B testing every variable. We kill what doesn't work and double down on what does — relentlessly.</p>
+          </div>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2" style="background:var(--glass);border:1px solid var(--border);border-radius:20px;padding:2.5rem;">
+        <div style="font-family:'Syne',sans-serif;font-weight:700;font-size:1.1rem;margin-bottom:1.5rem;">What you get on Day 1</div>
+        <div style="display:flex;flex-direction:column;gap:1rem;">
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(0,123,255,0.05);border-radius:10px;border:1px solid rgba(0,123,255,0.1);">
+            <span style="font-size:1.3rem;">📋</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;">Full Growth Audit</div>
+              <div style="color:var(--muted);font-size:.8rem;">48-hour delivery, ₹25,000 value</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(0,123,255,0.05);border-radius:10px;border:1px solid rgba(0,123,255,0.1);">
+            <span style="font-size:1.3rem;">🗺️</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;">90-Day Roadmap</div>
+              <div style="color:var(--muted);font-size:.8rem;">Custom strategy document</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(0,123,255,0.05);border-radius:10px;border:1px solid rgba(0,123,255,0.1);">
+            <span style="font-size:1.3rem;">📞</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;">Dedicated Account Manager</div>
+              <div style="color:var(--muted);font-size:.8rem;">Direct line, no middlemen</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem;padding:1rem;background:rgba(0,123,255,0.05);border-radius:10px;border:1px solid rgba(0,123,255,0.1);">
+            <span style="font-size:1.3rem;">📊</span>
+            <div>
+              <div style="font-weight:600;font-size:.9rem;">Live Dashboard Access</div>
+              <div style="color:var(--muted);font-size:.8rem;">Real-time reporting, always transparent</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section id="testimonials">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">Client Stories</span>
+      <h2 class="section-title">What Our Clients Say</h2>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card reveal reveal-delay-1">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-quote">"</div>
+        <p class="t-text">Orbit Scale completely transformed our ad performance. We went from burning money on Meta to generating a consistent 9× ROAS. The team is sharp, responsive, and genuinely cares about results.</p>
+        <div class="t-author">
+          <div class="t-avatar">RK</div>
+          <div>
+            <div class="t-name">Rahul Khanna</div>
+            <div class="t-role">Founder, NovaSkin D2C</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-2">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-quote">"</div>
+        <p class="t-text">Within 60 days, our qualified lead flow tripled. The strategy they built for us was genuinely bespoke — not a generic playbook. I've worked with 3 agencies before this. None came close.</p>
+        <div class="t-author">
+          <div class="t-avatar">PM</div>
+          <div>
+            <div class="t-name">Priya Mehta</div>
+            <div class="t-role">CEO, Stride Consulting</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card reveal reveal-delay-3">
+        <div class="t-stars">★★★★★</div>
+        <div class="t-quote">"</div>
+        <p class="t-text">The content strategy alone changed how people perceive our brand. We went from 4K to 26K followers organically in under 45 days. Orbit Scale is the real deal — data-driven and creative.</p>
+        <div class="t-author">
+          <div class="t-avatar">AS</div>
+          <div>
+            <div class="t-name">Aryan Singh</div>
+            <div class="t-role">Co-Founder, Vault Lifestyle</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ── -->
+<section id="pricing">
+  <div class="container">
+    <div class="section-header reveal" style="text-align:center;margin:0 auto 3.5rem;">
+      <span class="section-tag">Investment</span>
+      <h2 class="section-title">Transparent Pricing.<br>No Surprises.</h2>
+      <p class="section-sub" style="margin:0 auto;">Every plan includes a dedicated account manager, weekly reports, and full transparency.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card reveal reveal-delay-1">
+        <div class="plan-name">Launch</div>
+        <div class="plan-price">₹25K <span>/mo</span></div>
+        <div class="plan-desc">Ideal for new brands ready to build their first growth engine.</div>
+        <ul class="plan-features">
+          <li>1 Ad Platform (Meta or Google)</li>
+          <li>Content Calendar (12 posts/mo)</li>
+          <li>Monthly Strategy Call</li>
+          <li>Weekly Performance Report</li>
+          <li>Ad Spend up to ₹50K/mo</li>
+        </ul>
+        <a href="#contact" class="btn-outline" style="display:block;text-align:center;padding:.85rem;">Apply Now</a>
+      </div>
+      <div class="pricing-card popular reveal reveal-delay-2">
+        <div class="popular-badge">Most Popular</div>
+        <div class="plan-name">Scale</div>
+        <div class="plan-price">₹55K <span>/mo</span></div>
+        <div class="plan-desc">For growing brands ready to pour fuel on their marketing engine.</div>
+        <ul class="plan-features">
+          <li>2 Ad Platforms (Meta + Google)</li>
+          <li>Full Content Strategy (24 posts/mo)</li>
+          <li>Lead Gen Funnel Build</li>
+          <li>Bi-Weekly Strategy Calls</li>
+          <li>Live Dashboard Access</li>
+          <li>Ad Spend up to ₹2L/mo</li>
+        </ul>
+        <a href="#contact" class="btn-primary" style="display:block;text-align:center;">Apply Now</a>
+      </div>
+      <div class="pricing-card reveal reveal-delay-3">
+        <div class="plan-name">Orbit</div>
+        <div class="plan-price">Custom</div>
+        <div class="plan-desc">Full-stack growth partnership for 7-figure brands with aggressive goals.</div>
+        <ul class="plan-features">
+          <li>All Platforms + YouTube</li>
+          <li>Full Creative Production</li>
+          <li>Dedicated Growth Team</li>
+          <li>Weekly CEO-level Reporting</li>
+          <li>Priority Onboarding (48hr)</li>
+          <li>Unlimited Ad Spend Management</li>
+        </ul>
+        <a href="#contact" class="btn-outline" style="display:block;text-align:center;padding:.85rem;">Book a Call</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CONTACT / APPLICATION ── -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-wrap">
+      <div class="contact-info reveal">
+        <span class="section-tag">Apply Now</span>
+        <h2>Let's Build Your<br>Growth Engine</h2>
+        <p>Fill out the application below and our team will review your brand within 24 hours. Only a limited number of clients are accepted each month to ensure quality of service.</p>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📞</div>
+          <div class="contact-detail-text">
+            <div class="contact-detail-label">Phone / WhatsApp</div>
+            <div class="contact-detail-val">+91 93956 09223</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <div class="contact-detail-text">
+            <div class="contact-detail-label">Email</div>
+            <div class="contact-detail-val">officialorbitscale@gmail.com</div>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">🕐</div>
+          <div class="contact-detail-text">
+            <div class="contact-detail-label">Response Time</div>
+            <div class="contact-detail-val">Within 24 business hours</div>
+          </div>
+        </div>
+        <div style="margin-top:2rem;padding:1.5rem;background:rgba(0,229,160,0.05);border:1px solid rgba(0,229,160,0.15);border-radius:12px;">
+          <div style="color:var(--emerald);font-size:.8rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.5rem;">🔒 Limited Spots</div>
+          <div style="color:var(--muted);font-size:.85rem;line-height:1.7;">We only work with <strong style="color:var(--text);">8–10 clients per month</strong> to ensure every brand gets our full attention. Apply now to secure your spot.</div>
+        </div>
+      </div>
+
+      <div class="application-form reveal reveal-delay-2">
+        <div id="formContent">
+          <div class="form-title">Brand Application Form</div>
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name *</label>
+              <input type="text" id="firstName" placeholder="Rahul" required />
+            </div>
+            <div class="form-group">
+              <label>Last Name *</label>
+              <input type="text" id="lastName" placeholder="Sharma" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Business Email *</label>
+            <input type="email" id="email" placeholder="you@yourbrand.com" required />
+          </div>
+          <div class="form-group">
+            <label>Phone Number *</label>
+            <input type="tel" id="phone" placeholder="+91 98765 43210" required />
+          </div>
+          <div class="form-group">
+            <label>Brand / Business Name *</label>
+            <input type="text" id="brandName" placeholder="Your Brand Name" required />
+          </div>
+          <div class="form-group">
+            <label>Website / Instagram Handle</label>
+            <input type="text" id="website" placeholder="www.yourbrand.com or @handle" />
+          </div>
+          <div class="form-group">
+            <label>Monthly Marketing Budget *</label>
+            <select id="budget">
+              <option value="">Select your budget range</option>
+              <option value="under-25k">Under ₹25,000</option>
+              <option value="25k-50k">₹25,000 – ₹50,000</option>
+              <option value="50k-1l">₹50,000 – ₹1,00,000</option>
+              <option value="1l-3l">₹1,00,000 – ₹3,00,000</option>
+              <option value="3l-plus">₹3,00,000+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Service You're Interested In *</label>
+            <select id="service">
+              <option value="">Select a service</option>
+              <option value="paid-ads">Paid Advertising (Meta / Google)</option>
+              <option value="content">Content Strategy & Management</option>
+              <option value="lead-gen">Lead Generation & Funnels</option>
+              <option value="full-stack">Full-Stack Growth Partnership</option>
+              <option value="strategy-call">Free Strategy Call First</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Tell us about your brand & goals *</label>
+            <textarea id="goals" placeholder="What does your brand do? What are your main growth goals? What challenges are you currently facing?"></textarea>
+          </div>
+          <p class="form-note">By submitting this form, you agree to be contacted by Orbit Scale at <a href="mailto:officialorbitscale@gmail.com">officialorbitscale@gmail.com</a>. Your information is never shared with third parties.</p>
+          <button class="submit-btn" onclick="submitForm()">Submit Application →</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          <div class="success-icon">🚀</div>
+          <div class="success-text">Application Received!</div>
+          <p class="success-sub">Thank you for applying to Orbit Scale. Our team will review your application and reach out within 24 hours at the email you provided.<br><br>In the meantime, feel free to WhatsApp us at <strong>+91 93956 09223</strong>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAQ ── -->
+<section id="faq">
+  <div class="container">
+    <div class="section-header reveal">
+      <span class="section-tag">FAQ</span>
+      <h2 class="section-title">Common Questions</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How quickly can I expect results?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Most clients see measurable traction within the first 2–4 weeks of campaign launch. Significant revenue impact typically compounds from week 6 onwards. We set realistic expectations during onboarding and provide weekly data to track progress.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Do I need a big ad budget to work with Orbit Scale?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Our Launch plan starts with ad spend from ₹25,000/month. However, the more budget we have to work with, the faster we can test, iterate, and scale what's profitable. We're transparent about what's achievable at each budget level.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What industries do you work with?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">We have deep experience in D2C e-commerce, SaaS, high-ticket coaching & consulting, real estate, healthcare, and lifestyle brands. We take on a new industry only when we're confident we can deliver results — we'll tell you honestly if your niche isn't our strongest fit.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What's your contract length?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">We work on 3-month minimum engagements. Digital marketing compounds over time — expecting results in 30 days leads to poor decisions. Our 90-day framework is designed to deliver real, sustainable growth, not vanity metrics.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How do I communicate with my account manager?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">You'll have a dedicated account manager reachable via WhatsApp, email, and scheduled video calls. We use a shared project dashboard so you always know the status of every deliverable. No ghosting, ever.</div></div>
+      </div>
+      <div class="faq-item reveal">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Is the free strategy call really free?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a"><div class="faq-a-inner">Yes, 100%. The strategy call is a 30-minute session where we analyze your current brand, identify growth gaps, and outline what a 90-day partnership could look like. There's zero pressure to sign up — but most people do.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo" style="text-decoration:none;">
+          <div class="orbit-icon"><div class="orbit-ring"></div></div>
+          ORBIT <span>SCALE</span>
+        </a>
+        <p>We scale brands to 7-figures using data-driven social media marketing. Your growth is our only metric.</p>
+        <div class="footer-socials">
+          <a href="#" class="social-btn" title="Instagram">IG</a>
+          <a href="#" class="social-btn" title="LinkedIn">in</a>
+          <a href="#" class="social-btn" title="YouTube">YT</a>
+          <a href="https://wa.me/919395609223" class="social-btn" title="WhatsApp">WA</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="#services">Paid Advertising</a></li>
+          <li><a href="#services">Content Strategy</a></li>
+          <li><a href="#services">Lead Generation</a></li>
+          <li><a href="#services">Brand Positioning</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#results">Case Studies</a></li>
+          <li><a href="#process">Our Process</a></li>
+          <li><a href="#testimonials">Testimonials</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:officialorbitscale@gmail.com">officialorbitscale@gmail.com</a></li>
+          <li><a href="tel:+919395609223">+91 93956 09223</a></li>
+          <li><a href="https://wa.me/919395609223">WhatsApp Us</a></li>
+          <li><a href="#contact">Apply Now</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 Orbit Scale. All rights reserved.</div>
+      <div class="footer-power">⚡ POWERED BY ORBIT SCALE</div>
+    </div>
+  </div>
+</footer>
+
+<button class="back-top" id="backTop" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Back to top">↑</button>
+
+<script>
+  // Mobile menu
+  function toggleMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+  function closeMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  // Navbar scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.background = window.scrollY > 60
+      ? 'rgba(10,10,15,0.95)'
+      : 'rgba(10,10,15,0.6)';
+    document.getElementById('backTop').classList.toggle('show', window.scrollY > 400);
+  });
+
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submission
+  function submitForm() {
+    const fields = {
+      firstName: document.getElementById('firstName').value.trim(),
+      lastName: document.getElementById('lastName').value.trim(),
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim(),
+      brandName: document.getElementById('brandName').value.trim(),
+      budget: document.getElementById('budget').value,
+      service: document.getElementById('service').value,
+      goals: document.getElementById('goals').value.trim(),
+    };
+
+    // Validation
+    if (!fields.firstName || !fields.lastName) return shake('firstName');
+    if (!fields.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) return shake('email');
+    if (!fields.phone) return shake('phone');
+    if (!fields.brandName) return shake('brandName');
+    if (!fields.budget) return shake('budget');
+    if (!fields.service) return shake('service');
+    if (!fields.goals) return shake('goals');
+
+    // Build mailto link to send application to officialorbitscale@gmail.com
+    const subject = encodeURIComponent(`New Application: ${fields.brandName} — Orbit Scale`);
+    const body = encodeURIComponent(
+`New Brand Application — Orbit Scale
+
+Name: ${fields.firstName} ${fields.lastName}
+Email: ${fields.email}
+Phone: ${fields.phone}
+Brand: ${fields.brandName}
+Website/Handle: ${document.getElementById('website').value.trim() || 'Not provided'}
+Monthly Budget: ${fields.budget}
+Service Interested In: ${fields.service}
+
+Goals & About the Brand:
+${fields.goals}
+
+---
+Sent via OrbitScale.in Application Form`
+    );
+
+    // Open mail client with pre-filled email
+    window.location.href = `mailto:officialorbitscale@gmail.com?subject=${subject}&body=${body}`;
+
+    // Show success
+    setTimeout(() => {
+      document.getElementById('formContent').style.display = 'none';
+      document.getElementById('formSuccess').classList.add('show');
+    }, 500);
+  }
+
+  function shake(id) {
+    const el = document.getElementById(id);
+    el.style.borderColor = '#ff4560';
+    el.style.animation = 'shake .3s ease';
+    el.focus();
+    setTimeout(() => {
+      el.style.borderColor = '';
+      el.style.animation = '';
+    }, 1000);
+  }
+
+  // Shake keyframe
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-6px); }
+      40%, 80% { transform: translateX(6px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Smooth scroll for all anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+
+  // Process layout responsive fix
+  function fixProcessLayout() {
+    const layout = document.querySelector('.process-layout');
+    if (layout) {
+      if (window.innerWidth < 768) {
+        layout.style.gridTemplateColumns = '1fr';
+      } else {
+        layout.style.gridTemplateColumns = '1fr 1fr';
+      }
+    }
+  }
+  fixProcessLayout();
+  window.addEventListener('resize', fixProcessLayout);
+</script>
+</body>
+</html>
